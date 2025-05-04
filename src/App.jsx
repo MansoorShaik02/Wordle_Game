@@ -288,7 +288,7 @@ const Wordle = () => {
                 {guess.split("").map((letter, idx) => (
                   <motion.div
                     key={idx}
-                    className={`w-12 h-12 flex items-center justify-center text-xl font-bold rounded ${
+                    className={`w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center text-xl font-bold rounded ${
                       rowIdx < guesses.length
                         ? getLetterStatus(letter, idx)
                         : "bg-gray-700"
