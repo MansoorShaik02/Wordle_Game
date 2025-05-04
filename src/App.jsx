@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import "./App.css";
+import Left from "./components/left";
 
 const WORD_LIST = [
   "apple",
@@ -72,8 +73,6 @@ const keyboardKeys = [
 ];
 
 const Wordle = () => {
-  const [showRules, setShowRules] = useState(false);
-
   const [currentGuess, setCurrentGuess] = useState("");
   const [guesses, setGuesses] = useState([]);
   const [message, setMessage] = useState("");
@@ -191,46 +190,7 @@ const Wordle = () => {
       {/* Left Panel - Rules */}
       {/* Rules Panel (Visible on large screens, collapsible on mobile) */}
       {/* Mobile Rules Toggle Button */}
-      <div className="lg:hidden mb-4">
-        <button
-          onClick={() => setShowRules(!showRules)}
-          className="bg-gray-700 px-4 py-2 rounded"
-        >
-          {showRules ? "Hide Rules" : "Show Rules"}
-        </button>
-      </div>
-
-      <div
-        className={`lg:w-1/3 lg:pr-4 lg:border-r border-gray-700 ${
-          showRules ? "block" : "hidden"
-        } lg:block`}
-      >
-        <h2 className="text-xl lg:text-2xl font-bold mb-3">Game Rules</h2>
-        <ul className="text-xl lg:text-base list-disc pl-5 space-y-2">
-          <li className="lg:text-2xl">Guess the 5-letter word in 6 tries.</li>
-          <li className="lg:text-2xl">Green: correct letter and position.</li>
-          <li className="lg:text-2xl">
-            Yellow: correct letter, wrong position.
-          </li>
-          <li className="lg:text-2xl">Gray: letter not in the word.</li>
-          <li className="lg:text-2xl">Each clue costs 5 points.</li>
-          <li className="lg:text-2xl">Physical Keyboard Works too</li>
-          <li className="lg:text-2xl">+10 points for a correct guess.</li>
-          <li className="lg:text-2xl">-0 if you lose the round.</li>
-        </ul>
-        <h3 className="text-xl lg:text-2xl font-bold mb-3">Hard Mode</h3>
-        <ul className="text-sm lg:text-base list-disc pl-5 space-y-2">
-          <li className="lg:text-2xl">
-            Green letters must be reused in the same spot.
-          </li>
-          <li className="lg:text-2xl">
-            Yellow letters must be reused somewhere in the guess.
-          </li>
-          <li className="lg:text-2xl">
-            Hard mode resets the word when toggled.
-          </li>
-        </ul>
-      </div>
+      <Left></Left>
 
       {/* Right Panel - Game */}
       <div className="lg:w-2/3 w-full flex flex-col items-center">
@@ -288,7 +248,7 @@ const Wordle = () => {
                 {guess.split("").map((letter, idx) => (
                   <motion.div
                     key={idx}
-                    className={`w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center text-xl font-bold rounded ${
+                    className={`w-8 h-8 sm:w-15 sm:h-15 flex items-center justify-center text-xl font-bold rounded ${
                       rowIdx < guesses.length
                         ? getLetterStatus(letter, idx)
                         : "bg-gray-700"
@@ -306,17 +266,20 @@ const Wordle = () => {
         {message && <p className="mb-2 text-yellow-300">{message}</p>}
 
         {/* Keyboard */}
-        <div className="w-full max-w-md mx-auto px-2">
+        <div className="w-full max-w-md  px-2">
           {keyboardKeys.map((row, rowIndex) => (
             <div
               key={rowIndex}
-              className="flex justify-center flex-wrap gap-1 mb-2"
+              className="flex flex-wrap lg:flex-nowrap justify-center gap-1 mb-2"
             >
               {row.map((key) => (
                 <button
                   key={key}
                   onClick={() => handleKeyPress(key)}
-                  className="bg-gray-700 text-white rounded px-2 py-2 text-sm sm:px-3 sm:py-2 sm:text-base w-[9%] min-w-[36px]"
+                  className="bg-gray-700 text-white rounded px-2 py-2 text-sm sm:px-3 sm:py-2 sm:text-base min-w-[36px] md:min-w-[48px] lg:min-w-[60px] 
+text-sm sm:text-base md:text-lg 
+px-2 py-2 md:px-3 md:py-3
+"
                 >
                   {key}
                 </button>
@@ -325,13 +288,19 @@ const Wordle = () => {
                 <>
                   <button
                     onClick={() => handleKeyPress("Enter")}
-                    className="bg-green-600 text-white rounded px-2 py-2 text-sm sm:px-3 sm:py-2 sm:text-base w-[18%] min-w-[72px]"
+                    className="bg-green-600 text-white rounded 
+                    px-2 py-2 sm:px-3 sm:py-2 md:px-4 md:py-3 
+                    text-sm sm:text-base md:text-lg 
+                    min-w-[72px] md:min-w-[96px] lg:min-w-[108px]"
                   >
                     Enter
                   </button>
                   <button
                     onClick={() => handleKeyPress("Backspace")}
-                    className="bg-red-600 text-white rounded px-2 py-2 text-sm sm:px-3 sm:py-2 sm:text-base w-[18%] min-w-[72px]"
+                    className="bg-green-600 text-white rounded 
+                    px-2 py-2 sm:px-3 sm:py-2 md:px-4 md:py-3 
+                    text-sm sm:text-base md:text-lg 
+                    min-w-[72px] md:min-w-[96px] lg:min-w-[108px]"
                   >
                     ←
                   </button>
