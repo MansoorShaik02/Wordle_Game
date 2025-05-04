@@ -205,29 +205,37 @@ const Wordle = () => {
           showRules ? "block" : "hidden"
         } lg:block`}
       >
-        <h2 className="text-xl font-bold mb-3">Game Rules</h2>
-        <ul className="text-sm list-disc pl-5 space-y-2">
-          <li>Guess the 5-letter word in 6 tries.</li>
-          <li>Green: correct letter and position.</li>
-          <li>Yellow: correct letter, wrong position.</li>
-          <li>Gray: letter not in the word.</li>
-          <li>Each clue costs 5 points.</li>
-          <li>Physical Keyboard Works too</li>
-          <li>+10 points for a correct guess.</li>
-          <li>-0 if you lose the round.</li>
+        <h2 className="text-xl lg:text-2xl font-bold mb-3">Game Rules</h2>
+        <ul className="text-xl lg:text-base list-disc pl-5 space-y-2">
+          <li className="lg:text-2xl">Guess the 5-letter word in 6 tries.</li>
+          <li className="lg:text-2xl">Green: correct letter and position.</li>
+          <li className="lg:text-2xl">
+            Yellow: correct letter, wrong position.
+          </li>
+          <li className="lg:text-2xl">Gray: letter not in the word.</li>
+          <li className="lg:text-2xl">Each clue costs 5 points.</li>
+          <li className="lg:text-2xl">Physical Keyboard Works too</li>
+          <li className="lg:text-2xl">+10 points for a correct guess.</li>
+          <li className="lg:text-2xl">-0 if you lose the round.</li>
         </ul>
-        <h3 className="text-lg font-semibold mt-4">Hard Mode</h3>
-        <ul className="text-sm list-disc pl-5 space-y-2">
-          <li>Green letters must be reused in the same spot.</li>
-          <li>Yellow letters must be reused somewhere in the guess.</li>
-          <li>Hard mode resets the word when toggled.</li>
+        <h3 className="text-xl lg:text-2xl font-bold mb-3">Hard Mode</h3>
+        <ul className="text-sm lg:text-base list-disc pl-5 space-y-2">
+          <li className="lg:text-2xl">
+            Green letters must be reused in the same spot.
+          </li>
+          <li className="lg:text-2xl">
+            Yellow letters must be reused somewhere in the guess.
+          </li>
+          <li className="lg:text-2xl">
+            Hard mode resets the word when toggled.
+          </li>
         </ul>
       </div>
 
       {/* Right Panel - Game */}
       <div className="lg:w-2/3 w-full flex flex-col items-center">
         <div className="w-full flex justify-center mb-2">
-          <label className="mr-2 font-medium">Category:</label>
+          <label className="mr-2 font-medium lg:text-lg">Category:</label>
           <select
             value={category}
             onChange={(e) => {
@@ -260,9 +268,10 @@ const Wordle = () => {
           <span>Hard Mode</span>
         </label>
 
-        <p className="mb-2">
+        <p className="mb-2 lg:text-lg">
           Score: {score} | Streak: {streak}
         </p>
+
         <button
           onClick={getClue}
           disabled={score < 5 || revealedLetters.length === targetWord.length}
@@ -275,15 +284,17 @@ const Wordle = () => {
           {[...guesses, currentGuess.padEnd(5)]
             .slice(0, 6)
             .map((guess, rowIdx) => (
-              <div key={rowIdx} className="flex gap-2 justify-center">
-                {guess.split("").map((letter, i) => (
+              <div key={rowIdx} className="flex gap-2">
+                {guess.split("").map((letter, idx) => (
                   <motion.div
-                    key={i}
-                    className={`w-12 h-12 flex items-center justify-center rounded text-xl font-bold border border-gray-500 ${
+                    key={idx}
+                    className={`w-12 h-12 flex items-center justify-center text-xl font-bold rounded ${
                       rowIdx < guesses.length
-                        ? getLetterStatus(letter, i)
-                        : "bg-gray-800"
+                        ? getLetterStatus(letter, idx)
+                        : "bg-gray-700"
                     }`}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
                   >
                     {letter}
                   </motion.div>
@@ -295,33 +306,36 @@ const Wordle = () => {
         {message && <p className="mb-2 text-yellow-300">{message}</p>}
 
         {/* Keyboard */}
-        <div className="space-y-2 mt-4">
-          {keyboardKeys.map((row, i) => (
-            <div key={i} className="flex justify-center gap-1">
-              {i === 2 && (
-                <button
-                  onClick={() => handleKeyPress("Backspace")}
-                  className="px-2 py-1"
-                >
-                  ⌫
-                </button>
-              )}
+        <div className="w-full max-w-md mx-auto px-2">
+          {keyboardKeys.map((row, rowIndex) => (
+            <div
+              key={rowIndex}
+              className="flex justify-center flex-wrap gap-1 mb-2"
+            >
               {row.map((key) => (
                 <button
                   key={key}
                   onClick={() => handleKeyPress(key)}
-                  className="px-3 py-2 text-sm"
+                  className="bg-gray-700 text-white rounded px-2 py-2 text-sm sm:px-3 sm:py-2 sm:text-base w-[9%] min-w-[36px]"
                 >
                   {key}
                 </button>
               ))}
-              {i === 2 && (
-                <button
-                  onClick={() => handleKeyPress("Enter")}
-                  className="px-2 py-1"
-                >
-                  ⏎
-                </button>
+              {rowIndex === 2 && (
+                <>
+                  <button
+                    onClick={() => handleKeyPress("Enter")}
+                    className="bg-green-600 text-white rounded px-2 py-2 text-sm sm:px-3 sm:py-2 sm:text-base w-[18%] min-w-[72px]"
+                  >
+                    Enter
+                  </button>
+                  <button
+                    onClick={() => handleKeyPress("Backspace")}
+                    className="bg-red-600 text-white rounded px-2 py-2 text-sm sm:px-3 sm:py-2 sm:text-base w-[18%] min-w-[72px]"
+                  >
+                    ←
+                  </button>
+                </>
               )}
             </div>
           ))}
