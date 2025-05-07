@@ -74,6 +74,9 @@ const keyboardKeys = [
 
 const Wordle = () => {
   const [currentGuess, setCurrentGuess] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentWord = WORD_LIST[currentIndex];
+
   const [guesses, setGuesses] = useState([]);
   const [message, setMessage] = useState("");
   const [score, setScore] = useState(20);
@@ -88,6 +91,16 @@ const Wordle = () => {
     return list[Math.floor(Math.random() * list.length)].toUpperCase();
   };
   const [targetWord, setTargetWord] = useState(getRandomWord());
+  const handleNextClick = () => {
+    if (score < 10) {
+      setMessage("Not enough points to skip the word (Need 10).");
+      return;
+    }
+
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % WORD_LIST.length);
+    setScore(score - 10); // Loop through words
+  };
+
   const handleKeyPress = (key) => {
     if (key === "Enter") {
       if (currentGuess.length !== 5) return;
@@ -168,7 +181,11 @@ const Wordle = () => {
   };
 
   const getClue = () => {
-    if (score < 5 || revealedLetters.length === targetWord.length) return;
+    // if (score < 5 || revealedLetters.length === targetWord.length) return;
+    if (score < 5) {
+      setMessage("Not enough points to request Clue (Need 5).");
+      return;
+    }
 
     const unrevealedLetters = targetWord
       .split("")
@@ -186,7 +203,7 @@ const Wordle = () => {
   };
 
   return (
-    <div className="min-h-screen p-1 bg-gray-900 text-white flex flex-col lg:flex-row">
+    <div className="min-h-screen p-1 bg-gray-900 text-white flex flex-col lg:flex-row lg:pt-10">
       {/* Left Panel - Rules */}
       {/* Rules Panel (Visible on large screens, collapsible on mobile) */}
       {/* Mobile Rules Toggle Button */}
@@ -225,17 +242,19 @@ const Wordle = () => {
               });
             }}
           />
-          <span>Hard Mode</span>
+          <span className="hover:text-green-600 cursor-pointer transition-all duration-200">
+            Hard Mode
+          </span>
         </label>
 
-        <p className="mb-2 lg:text-lg">
-          Score: {score} | Streak: {streak}
-        </p>
-
+        <div className="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur-md text-black px-4 py-2 rounded-xl shadow-lg border border-gray-200">
+          <p className="text-sm lg:text-lg font-semibold">
+            Score: {score} | Streak: {streak}
+          </p>
+        </div>
         <button
           onClick={getClue}
-          disabled={score < 5 || revealedLetters.length === targetWord.length}
-          className="mb-2"
+          className="mb-2 bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-all duration-300 cursor-pointer"
         >
           Use 5 Points for Clue
         </button>
@@ -288,21 +307,33 @@ px-2 py-2 md:px-3 md:py-3
                 <>
                   <button
                     onClick={() => handleKeyPress("Enter")}
-                    className="bg-green-600 text-white rounded 
-                    px-2 py-2 sm:px-3 sm:py-2 md:px-4 md:py-3 
-                    text-sm sm:text-base md:text-lg 
-                    min-w-[72px] md:min-w-[96px] lg:min-w-[108px]"
+                    className="bg-green-600 hover:bg-green-700 hover:scale-105 transition-all duration-200 
+  text-white rounded cursor-pointer
+  px-2 py-2 sm:px-3 sm:py-2 md:px-4 md:py-3 
+  text-sm sm:text-base md:text-lg 
+  min-w-[72px] md:min-w-[96px] lg:min-w-[108px] shadow-md"
                   >
                     Enter
                   </button>
+
                   <button
                     onClick={() => handleKeyPress("Backspace")}
-                    className="bg-green-600 text-white rounded 
-                    px-2 py-2 sm:px-3 sm:py-2 md:px-4 md:py-3 
-                    text-sm sm:text-base md:text-lg 
-                    min-w-[72px] md:min-w-[96px] lg:min-w-[108px]"
+                    className="bg-green-600 hover:bg-green-700 hover:scale-105 transition-all duration-200 
+  text-white rounded cursor-pointer
+  px-2 py-2 sm:px-3 sm:py-2 md:px-4 md:py-3 
+  text-sm sm:text-base md:text-lg 
+  min-w-[72px] md:min-w-[96px] lg:min-w-[108px] shadow-md"
                   >
                     ←
+                  </button>
+                  <button
+                    onClick={handleNextClick}
+                    className="bg-green-600 hover:bg-green-700 hover:scale-105 transition-all duration-200 text-white rounded cursor-pointer
+  px-2 py-2 sm:px-3 sm:py-2 md:px-4 md:py-3 
+  text-sm sm:text-base md:text-lg 
+  min-w-[72px] md:min-w-[96px] lg:min-w-[108px] shadow-md"
+                  >
+                    Next
                   </button>
                 </>
               )}
