@@ -184,6 +184,10 @@ const Wordle = () => {
     // if (score < 5 || revealedLetters.length === targetWord.length) return;
     if (score < 5) {
       setMessage("Not enough points to request Clue (Need 5).");
+      setTimeout(() => {
+        setMessage("");
+      }, 3000); // 3 seconds
+
       return;
     }
 
@@ -242,9 +246,15 @@ const Wordle = () => {
               });
             }}
           />
-          <span className="hover:text-green-600 cursor-pointer transition-all duration-200">
-            Hard Mode
-          </span>
+          {hardMode ? (
+            <span className="hover:text-green-600 cursor-pointer transition-all duration-200">
+              Disable Hard Mode
+            </span>
+          ) : (
+            <span className="hover:text-green-600 cursor-pointer transition-all duration-200">
+              Enable Hard Mode
+            </span>
+          )}
         </label>
 
         <div className="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur-md text-black px-4 py-2 rounded-xl shadow-lg border border-gray-200">
