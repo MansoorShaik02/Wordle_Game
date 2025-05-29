@@ -211,7 +211,7 @@ const Wordle = () => {
       {/* Left Panel - Rules */}
       {/* Rules Panel (Visible on large screens, collapsible on mobile) */}
       {/* Mobile Rules Toggle Button */}
-      <Left></Left>
+      <Left />
 
       {/* Right Panel - Game */}
       <div className="lg:w-2/3 w-full flex flex-col items-center">
