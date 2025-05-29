@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import "./App.css";
-import Left from "./components/left";
+import Left from "./components/Left";
 
 const WORD_LIST = [
   "apple",
