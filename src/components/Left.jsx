@@ -19,7 +19,7 @@ const Left = () => {
         } lg:block`}
       >
         <h2 className="text-xl lg:text-2xl font-bold mb-3 text-white-600">
-          Game Rules
+          Game Rules :
         </h2>
         <ul className="text-xl lg:text-base list-disc pl-5 space-y-2">
           <li className="lg:text-2xl text-blue-600 hover:text-blue-800">
